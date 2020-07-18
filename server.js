@@ -1,5 +1,6 @@
 const express = require("express");
 const helmet = require("helmet");
+const actions = require("./routes/actionsRoutes");
 const projects = require("./routes/projectsRoutes");
 
 const server = express();
@@ -11,7 +12,7 @@ server.get('/', (req,res) =>{
     <h1>My first web api sprint challenge</h1>
     `)
 });
-
+server.use("/api/actions", actions);
 server.use("/api/projects", projects);
 
 module.exports = server;

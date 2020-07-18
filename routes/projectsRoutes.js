@@ -2,6 +2,7 @@ const express = require("express");
 
 const dbProjects = require("../data/helpers/projectModel");
 const dbActions = require("../data/helpers/actionModel");
+const mid = require("../middleware/middleware");
 
 
 const router = express.Router();
@@ -13,6 +14,16 @@ router.get("/", async (req, res) => {
     res.status(200).json(projects);
   } catch {
     res.status(500).json({ error: "error" });
+  }
+});
+
+router.get("/:id", async (req,res) => {
+ 
+  try {
+    const projects = await dbProjects.get(req.params.id);
+    res.status(200).json(projects);
+  } catch {
+res.status(500).json({error: "oops"})
   }
 });
 
@@ -49,7 +60,7 @@ router.post("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     await dbProjects.update(req.params.id, { ...req.body, id: req.params.id });
-    const newResult = await dbProjects.getById(req.params.id);
+    const newResult = await dbProjects.get(req.params.id);
     res.status(200).json(newResult);
   } catch {
     res.status(500).json({ error: "500 Error" });
